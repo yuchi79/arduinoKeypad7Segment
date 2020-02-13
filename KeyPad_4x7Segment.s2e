@@ -1,0 +1,84 @@
+﻿{   
+   "extensionName": "KeyPad_4x7Segment(한코딩)",
+   "description": "This is the mblock extension for 4x4 Keypad, 4digit 7segment",
+   "version": "1.0",
+   "author": "Mia(Lee Hyunjeong)",
+   "homepage": "https://github.com/yuchi79/arduinoKeypad7Segment",
+   "sort":0,
+   "javascriptURL":"js/KeyPad_4x7Segment.js",
+   "firmware":"1.0",
+   "extensionPort":0,
+   "blockSpecs": [
+      ["w","init 7segment : position %n, %n, %n, %n, segment %n, %n, %n, %n, %n, %n, %n, %n","initSegment", 1,2,3,4,5,6,7,8,9,10,11,12, {
+         "encode":"",
+         "setup":"for(int i = 0; i < 4; i++) pinMode(position_pin[i], OUTPUT);\nfor(int i = 0; i < 8; i++) pinMode(segment_pin[i], OUTPUT);\n",
+         "inc":"#include \"segment.h\"\n",
+         "def":
+            "int position_pin[] = {{0},{1},{2},{3}};               //4자리 결정 핀\nint segment_pin[] = {{4},{5},{6},{7},{8},{9},{10},{11}};   //세그먼트 제어 핀\n\n",
+         "work":"",
+         "loop":""
+         }],
+      ["w","set %n 7segment position as %n", "setSegmentNumber ", 1, 1, {
+         "encode":"",
+         "setup":"",
+         "inc":"#include \"segment.h\"\n",
+         "def":"",
+         "work":"show(position_pin, segment_pin, {0},{1});\ndelay(DELAY_TIME);\n",
+         "loop":""
+         }],
+      ["w","set keypad user map as 4x4 string : %s", "setKeypadMap", "123A456B789C*0#D", {
+         "encode":"",
+         "setup":"strcpy(userKeymap, {0});\nmemcpy(keymap, userKeymap, 16);\n",
+         "inc":"",
+         "def":"char userKeymap[17];\n\n",
+         "work":"",
+         "loop":""
+         }],
+      ["w","set keypad pin row1:%n, row2:%n, row3:%n, row4:%n, col1:%n, col2:%n, col3:%n, col4:%n", "setKeypadPin", 2, 3, 4, 5, 6, 7, 8, 9, {
+         "encode":"",
+         "setup":"",
+         "inc":"#include \"Keypad.h\"\n",
+         "def":"const byte numRows = 4;\nconst byte numCols= 4;\nchar keymap[numRows][numCols] = {{'1','2','3','A'},{'4','5','6','B'},{'7','8','9','C'},{'*','0','#','D'}};\nbyte rowPins[numRows] = {{0}, {1}, {2}, {3}};\nbyte colPins[numCols] = {{4}, {5}, {6}, {7}};\nKeypad keypad = Keypad( makeKeymap(keymap), rowPins, colPins, numRows, numCols );\n",
+         "work":"",
+         "loop":""
+         }],
+      ["w", "Wait and Read Key", "readKey", {
+         "setup": "",
+         "inc": "",
+         "def": "char key;",
+         "work": "key=keypad.getKey();\n",
+         "loop": ""
+         }],
+      ["b", "Is Valid Key?", "isValid", {
+         "setup": "",
+         "inc": "",
+         "def": "char key;",
+         "work": "key != 0",
+         "loop": ""
+         }],
+      ["R", "Key value", "keyValue", {
+         "setup": "",
+         "inc": "",
+         "def": "",
+         "work": "key",
+         "loop": ""
+         }],
+   ],
+   "menus": { 
+   },
+   "values":{
+    
+     
+   },
+   "translators":{
+     "ko":{
+         "init 7segment : position %n, %n, %n, %n, segment %n, %n, %n, %n, %n, %n, %n, %n":"7세그먼트 위치 핀 %n, %n, %n, %n 으로, 세그먼트 핀 %n, %n, %n, %n, %n, %n, %n, %n 으로 초기화하기",
+         "set %n 7segment position as %n":"7세그먼트 %n번째 위치에 숫자 %n 쓰기",
+         "set keypad user map as 4x4 string : %s":"키패드 4x4 맵을 다음의 사용자 문자열로 맵핑 : %s",
+         "set keypad pin row1:%n, row2:%n, row3:%n, row4:%n, col1:%n, col2:%n, col3:%n, col4:%n":"키패드 핀을 열1:%n, 열2:%n, 열3:%n, 열4:%n, 행1:%n, 행2:%n, 행3:%n, 행4:%n 으로 설정",
+         "Wait and Read Key":"키 입력 대기하고 값 읽기",
+         "Is Valid Key?":"유효한 키 인가?",
+         "Key value":"키 값"
+      }
+   }
+}
